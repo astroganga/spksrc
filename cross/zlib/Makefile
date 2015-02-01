@@ -12,5 +12,6 @@ COMMENT  = Compression Library
 LICENSE  = zlib-license
 
 CONFIGURE_ARGS = --shared --prefix=$(INSTALL_PREFIX)
+ADDITIONAL_LDFLAGS= -Wl,-version-script zlib.map
 
 include ../../mk/spksrc.cross-cc.mk

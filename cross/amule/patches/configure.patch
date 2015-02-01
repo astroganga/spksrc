@@ -1,0 +1,28 @@
+--- ./configure.orig	2014-09-15 16:58:33.685045082 +0200
++++ ./configure	2014-09-15 16:55:52.080289759 +0200
+@@ -8569,7 +8569,7 @@
+ fi
+ 
+ 
+-	if test $cross_compiling = no; then :
++#	if test $cross_compiling = no; then :
+ 
+ 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for libupnp version >= 1.6.6" >&5
+ $as_echo_n "checking for libupnp version >= 1.6.6... " >&6; }
+@@ -8612,12 +8612,12 @@
+ $as_echo "$result$resultstr" >&6; }
+ 		libupnp_error="libupnp >= 1.6.6 not found$resultstr"
+ 
+-else
++#else
+ 
+-		result=no
+-		libupnp_error="cross compiling"
++#		result=no
++#		libupnp_error="cross compiling"
+ 
+-fi
++#fi
+ 
+ 	if test ${result:-no} = yes; then :
+   LIBUPNP_CPPFLAGS="$LIBUPNP_CPPFLAGS -DENABLE_UPNP=1"

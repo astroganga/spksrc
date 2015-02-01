@@ -1,0 +1,6 @@
+lnk:lib/libwx_baseu-2.8.so.0
+lib:lib/libwx_baseu-2.8.so.0.8.0
+lnk:lib/libwx_baseu_net-2.8.so.0
+lib:lib/libwx_baseu_net-2.8.so.0.8.0
+lnk:lib/libwx_baseu_xml-2.8.so.0
+lib:lib/libwx_baseu_xml-2.8.so.0.8.0
