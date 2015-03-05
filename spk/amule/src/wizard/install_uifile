@@ -1,0 +1,89 @@
+[{
+    "step_title": "Installation Note",
+    "items": [{
+    	"desc": "This is a test description on installation"
+    }]
+}, {
+    "step_title": "Basic configuration",
+    "items": [{
+        "type": "textfield",
+        "desc": "Download directory",
+        "subitems": [{
+            "key": "wizard_download_dir",
+            "desc": "Download directory",
+            "defaultValue": "/volume1/downloads/amIncoming",
+            "validator": {
+                "allowBlank": false,
+                "regex": {
+                    "expr": "/^\\\/volume[0-9]+\\\/.+/",
+                    "errorText": "Path should begin with /volume?/ with ? the number of the volume and should have at least one subdir"
+                }
+            }
+        }]
+    }, {
+        "type": "textfield",
+        "desc": "Directory to keep Temp files in until download is complete",
+        "subitems": [{
+            "key": "wizard_incomplete_dir",
+            "desc": "Incomplete directory",
+			"defaultValue": "/volume1/downloads/amTemp",
+            "validator": {
+                "allowBlank": false,
+                "regex": {
+                    "expr": "/^\\\/volume[0-9]+\\\/.+/",
+                    "errorText": "Path should begin with /volume?/ with ? the number of the volume and should have at least one subdir"
+                }
+            }
+        }]
+    }]
+}, {
+    "step_title": "Basic configuration",
+    "items": [{
+        "type": "textfield",
+        "desc": "Standard TCP Port",
+        "subitems": [{
+            "key": "wizard_tcpport",
+            "desc": "TCP Port",
+			"defaultValue": "34662",
+            "validator": {
+                "allowBlank": false,
+                "regex": {
+                    "expr": "/^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[2-9]\\d{3}|1[1-9]\\d{2}|10[3-9]\\d|102[4-9])$/",
+                    "errorText": "Port should be between 1024 and 65535"
+                }
+            }			
+        }]
+    }, {
+        "type": "textfield",
+        "desc": "Extended UDP Port (Kad/Global Search)",
+        "subitems": [{
+            "key": "wizard_udpport",
+            "desc": "UDP Port",
+			"defaultValue": "34672",
+            "validator": {
+                "allowBlank": false,
+                "regex": {
+                    "expr": "/^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[2-9]\\d{3}|1[1-9]\\d{2}|10[3-9]\\d|102[4-9])$/",
+                    "errorText": "Port should be between 1024 and 65535"
+                }
+            }			
+        }]
+    }]
+}, {
+    "step_title": "Basic configuration",
+    "items": [{
+        "type": "password",
+        "desc": "Web interface password. Defaults to admin (Port: 4721)",
+        "subitems": [{
+            "key": "wizard_webpassword",
+            "desc": "Password"
+        }]
+    }, {
+        "type": "password",
+        "desc": "External Connection password. Defaults to admin (Port: 4722)",
+        "subitems": [{
+            "key": "wizard_ecpassword",
+            "desc": "EC Password",
+        }]
+    }]
+}]
