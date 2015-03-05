@@ -3,7 +3,7 @@
         "com.synocommunity.packages.amule": {
             "title": "aMule Daemon",
             "desc": "aMule Web UI",
-            "icon": "images/transmission-{0}.png",
+            "icon": "images/amule-{0}.png",
             "type": "url",
             "protocol": "http",
             "port": "4711",
