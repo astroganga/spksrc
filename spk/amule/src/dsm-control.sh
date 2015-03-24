@@ -6,16 +6,16 @@ DNAME="aMule"
 
 # Others
 INSTALL_DIR="/usr/local/${PACKAGE}"
-PYTHON_DIR="/usr/local/python"
-PATH="${INSTALL_DIR}/bin:${PYTHON_DIR}/bin:${PATH}"
-USER="transmission"
-TRANSMISSION="${INSTALL_DIR}/bin/transmission-daemon"
-PID_FILE="${INSTALL_DIR}/var/transmission.pid"
+#PYTHON_DIR="/usr/local/python"
+PATH="${INSTALL_DIR}/bin:${PATH}"
+USER="amule"
+AMULE="${INSTALL_DIR}/bin/amule-daemon"
+PID_FILE="${INSTALL_DIR}/var/amule.pid"
 
 
 start_daemon ()
 {
-#    su - ${USER} -c "PATH=${PATH} ${TRANSMISSION} -g ${INSTALL_DIR}/var/ -x ${PID_FILE}"
+    su - ${USER} -c "PATH=${PATH} ${AMULE} -f -c ${INSTALL_DIR}/var/ -p ${PID_FILE}"
 	return 0
 }
 
@@ -28,22 +28,22 @@ stop_daemon ()
 
 daemon_status ()
 {
-#    if [ -f ${PID_FILE} ] && kill -0 `cat ${PID_FILE}` > /dev/null 2>&1; then
-#        return
-#    fi
-#    rm -f ${PID_FILE}
+    if [ -f ${PID_FILE} ] && kill -0 `cat ${PID_FILE}` > /dev/null 2>&1; then
+        return
+    fi
+    rm -f ${PID_FILE}
     return 1
 }
 
 wait_for_status ()
 {
-#    counter=$2
-#    while [ ${counter} -gt 0 ]; do
-#        daemon_status
-#        [ $? -eq $1 ] && return
-#        let counter=counter-1
-#        sleep 1
-#    done
+    counter=$2
+    while [ ${counter} -gt 0 ]; do
+        daemon_status
+        [ $? -eq $1 ] && return
+        let counter=counter-1
+        sleep 1
+    done
     return 1
 }
 
