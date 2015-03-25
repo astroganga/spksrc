@@ -94,11 +94,20 @@ postinst ()
     # Create user
     adduser -h ${INSTALL_DIR}/var -g "${DNAME} User" -G ${GROUP} -s /bin/sh -S -D ${USER}
     
+    if [ "${SYNOPKG_PKG_STATUS}" == "INSTALL" ]; then
+
+        # aMule Daemon first run needed to initialize standard config files
+        su - ${USER} -c "PATH=${PATH} ${INSTALL_DIR}/bin/amule-daemon -c ${INSTALL_DIR}/var/  > ${INSTALL_DIR}/var/firstrun.log"
+
+        # Activate aMule External Connections to allow daemon start
+        sed -i -e "s/^AcceptExternalConnections=.*$/AcceptExternalConnections=1/" ${INSTALL_DIR}/var/amule.conf
+        ECPASSWORD=$(echo -n "${wizard_ecpassword:=admin}" | openssl md5 2>/dev/null | awk '{print $2}')
+        sed -i -e "s/^ECPassword=.*$/ECPassword=${ECPASSWORD}/" ${INSTALL_DIR}/var/amule.conf
+    
+    fi
+    
     # Correct the files ownership
     chown -R ${USER}:root ${SYNOPKG_PKGDEST}
-    
-    su - ${USER} -c "PATH=${PATH} ${INSTALL_DIR}/bin/amule-daemon -c ${INSTALL_DIR}/var/  > ${INSTALL_DIR}/var/test.log"
-
 
 #    if [ "${SYNOPKG_PKG_STATUS}" == "INSTALL" ]; then
 #        # Edit the configuration according to the wizard
@@ -146,8 +155,8 @@ postinst ()
 
 preuninst ()
 {
-#    # Stop the package
-#    ${SSS} stop > /dev/null
+    # Stop the package
+    ${SSS} stop > /dev/null
 
     # Remove the user (if not upgrading)
     if [ "${SYNOPKG_PKG_STATUS}" != "UPGRADE" ]; then
