@@ -1,0 +1,16 @@
+[{
+    "step_title": "Configuration Backup",
+    "items": [{
+        "type": "singleselect",
+        "desc": "Do you want to save configuration before uninstall?",
+        "subitems": [{
+            "key": "wizard_backup_config_yes",
+            "desc": "Yes",
+            "defaultValue": true
+        }, {
+            "key": "wizard_backup_config_no",
+            "desc": "No",
+            "defaultValue": false
+        }]
+    }]
+}]

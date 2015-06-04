@@ -2,7 +2,7 @@
 
 # Package
 PACKAGE="amule"
-DNAME="aMule"
+DNAME="aMule Daemon"
 
 # Others
 INSTALL_DIR="/usr/local/${PACKAGE}"
@@ -10,8 +10,9 @@ SSS="/var/packages/${PACKAGE}/scripts/start-stop-status"
 PATH="${INSTALL_DIR}/bin:${PATH}"
 USER="amule"
 GROUP="users"
-CFG_FILE="${INSTALL_DIR}/var/settings.json"
+CFG_FILE="${INSTALL_DIR}/var/amule.conf"
 TMP_DIR="${SYNOPKG_PKGDEST}/../../@tmp"
+BACKUP_DIR="${SYNOPKG_PKGDEST}/../.."
 
 SERVICETOOL="/usr/syno/bin/servicetool"
 SYNOSHARE="/usr/syno/sbin/synoshare"
@@ -83,6 +84,45 @@ preinst ()
     exit 0
 }
 
+change_config_all_param_value ()
+{
+    sed -i -e "s/^${1}=.*$/${1}=${2}/" ${CFG_FILE}
+}
+
+change_config_param_value ()
+{
+    echo "change_config_param_value start"
+#    echo "\${1}="${1}
+#    echo "\${2}="${2}
+#    echo "\${3}="${3}
+#    echo "\${4}="${4}
+    KEY=${1}
+    VALUE=${2}
+    INI_SECTION=${3}
+    FILE_NAME=${CFG_FILE}
+    if [ ! -z "${4}" ]; then
+        FILE_NAME=${4}
+    fi
+    R_START=$(grep -n "^\[${INI_SECTION}\].*$" ${FILE_NAME} | cut -d':' -f1)
+    R_END=$((R_START+$(sed -n -e "/^\[${INI_SECTION}\]/,/^\s*\[/{/^[^;].*\=.*/p;}" ${FILE_NAME} | wc -l)))
+    echo "KEY="$KEY
+    echo "VALUE="$VALUE
+    echo "INI_SECTION"=$INI_SECTION
+    echo "FILE_NAME="$FILE_NAME
+    sed -i -e "${R_START},${R_END} s/^${KEY}=.*$/${KEY}=${VALUE}/" ${FILE_NAME}
+    echo "change_config_param_value end"
+}
+
+extract_config_section ()
+{
+    INI_SECTION=${1}
+    FILE_NAME=${CFG_FILE}
+    if [ ! -z "${2}" ]; then
+        FILE_NAME=${2}
+    fi
+    sed -n -e "/^\[${INI_SECTION}\]/,/^\s*\[/{/^[^;].*\=.*/p;}" ${FILE_NAME}
+}
+
 postinst ()
 {
     # Link
@@ -97,12 +137,23 @@ postinst ()
     if [ "${SYNOPKG_PKG_STATUS}" == "INSTALL" ]; then
 
         # aMule Daemon first run needed to initialize standard config files
-        su - ${USER} -c "PATH=${PATH} ${INSTALL_DIR}/bin/amule-daemon -c ${INSTALL_DIR}/var/  > ${INSTALL_DIR}/var/firstrun.log"
+        su - ${USER} -c "PATH=${PATH} ${INSTALL_DIR}/bin/amule-daemon -c ${INSTALL_DIR}/var/ > ${INSTALL_DIR}/var/firstrun.log"
 
         # Activate aMule External Connections to allow daemon start
-        sed -i -e "s/^AcceptExternalConnections=.*$/AcceptExternalConnections=1/" ${INSTALL_DIR}/var/amule.conf
+        #sed -i -e "s/^AcceptExternalConnections=.*$/AcceptExternalConnections=1/" ${INSTALL_DIR}/var/amule.conf
+        change_config_param_value AcceptExternalConnections 1 ExternalConnect >> ${INSTALL_DIR}/var/firstrun.log
         ECPASSWORD=$(echo -n "${wizard_ecpassword:=admin}" | openssl md5 2>/dev/null | awk '{print $2}')
-        sed -i -e "s/^ECPassword=.*$/ECPassword=${ECPASSWORD}/" ${INSTALL_DIR}/var/amule.conf
+        change_config_param_value ECPassword ${ECPASSWORD} ExternalConnect >> ${INSTALL_DIR}/var/firstrun.log
+        #sed -i -e "s/^ECPassword=.*$/ECPassword=${ECPASSWORD}/" ${INSTALL_DIR}/var/amule.conf
+        #-----------------------------------------------------
+        change_config_param_value MaxUpload 50 eMule >> ${INSTALL_DIR}/var/firstrun.log
+        change_config_param_value SlotAllocation 5 eMule >> ${INSTALL_DIR}/var/firstrun.log
+        change_config_param_value Port ${wizard_tcpport} eMule >> ${INSTALL_DIR}/var/firstrun.log
+        change_config_param_value UDPPort ${wizard_udpport} eMule >> ${INSTALL_DIR}/var/firstrun.log
+        #-----------------------------------------------------
+        WEBPASSWORD=$(echo -n "${wizard_webpassword:=admin}" | openssl md5 2>/dev/null | awk '{print $2}')
+        change_config_param_value Enabled 1 WebServer >> ${INSTALL_DIR}/var/firstrun.log
+        change_config_param_value Password ${WEBPASSWORD} WebServer >> ${INSTALL_DIR}/var/firstrun.log
     
     fi
     
@@ -147,8 +198,8 @@ postinst ()
 #    # Correct the files ownership
 #    chown -R ${USER}:root ${SYNOPKG_PKGDEST}
 
-#    # Add firewall config
-#    ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
+    # Add firewall config
+    ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
 
     exit 0
 }
@@ -157,6 +208,15 @@ preuninst ()
 {
     # Stop the package
     ${SSS} stop > /dev/null
+    
+    # Save configuration files if required
+    if [ "${wizard_backup_config_yes}" ==  "true" ]; then
+        rm -fr ${BACKUP_DIR}/@${PACKAGE}
+        mkdir -p ${BACKUP_DIR}/@${PACKAGE}
+        mv ${INSTALL_DIR}/var ${BACKUP_DIR}/@${PACKAGE}/
+#    else
+#        rm -fr ${BACKUP_DIR}/@${PACKAGE}
+    fi
 
     # Remove the user (if not upgrading)
     if [ "${SYNOPKG_PKG_STATUS}" != "UPGRADE" ]; then
@@ -164,11 +224,11 @@ preuninst ()
         deluser ${USER}
     fi
 
-#    # Remove firewall config
-#    if [ "${SYNOPKG_PKG_STATUS}" == "UNINSTALL" ]; then
-#        ${SERVICETOOL} --remove-configure-file --package ${PACKAGE}.sc >> /dev/null
-#    fi
-
+    # Remove firewall config
+    if [ "${SYNOPKG_PKG_STATUS}" == "UNINSTALL" ]; then
+        ${SERVICETOOL} --remove-configure-file --package ${PACKAGE}.sc >> /dev/null
+    fi
+    
     exit 0
 }
 
@@ -182,23 +242,23 @@ postuninst ()
 
 preupgrade ()
 {
-#    # Stop the package
-#    ${SSS} stop > /dev/null
+    # Stop the package
+    ${SSS} stop > /dev/null
 
-#    # Save some stuff
-#    rm -fr ${TMP_DIR}/${PACKAGE}
-#    mkdir -p ${TMP_DIR}/${PACKAGE}
-#    mv ${INSTALL_DIR}/var ${TMP_DIR}/${PACKAGE}/
+    # Save some stuff
+    rm -fr ${TMP_DIR}/${PACKAGE}
+    mkdir -p ${TMP_DIR}/${PACKAGE}
+    mv ${INSTALL_DIR}/var ${TMP_DIR}/${PACKAGE}/
 
     exit 0
 }
 
 postupgrade ()
 {
-#    # Restore some stuff
-#    rm -fr ${INSTALL_DIR}/var
-#    mv ${TMP_DIR}/${PACKAGE}/var ${INSTALL_DIR}/
-#    rm -fr ${TMP_DIR}/${PACKAGE}
+    # Restore some stuff
+    rm -fr ${INSTALL_DIR}/var
+    mv ${TMP_DIR}/${PACKAGE}/var ${INSTALL_DIR}/
+    rm -fr ${TMP_DIR}/${PACKAGE}
 
     exit 0
 }

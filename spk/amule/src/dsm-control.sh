@@ -2,7 +2,7 @@
 
 # Package
 PACKAGE="amule"
-DNAME="aMule"
+DNAME="aMule Daemon"
 
 # Others
 INSTALL_DIR="/usr/local/${PACKAGE}"
@@ -16,7 +16,7 @@ PID_FILE="${INSTALL_DIR}/var/amule.pid"
 start_daemon ()
 {
     su - ${USER} -c "PATH=${PATH} ${AMULE} -f -c ${INSTALL_DIR}/var/ -p ${PID_FILE}"
-	return 0
+    return 0
 }
 
 stop_daemon ()
@@ -83,9 +83,9 @@ case $1 in
         fi
         ;;
     log)
-	echo "${INSTALL_DIR}/var/logfile"
-	exit 0
-	;;
+        echo "${INSTALL_DIR}/var/logfile"
+	    exit 0
+	    ;;
     *)
         exit 1
         ;;
