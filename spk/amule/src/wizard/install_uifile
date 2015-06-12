@@ -11,7 +11,7 @@
         "subitems": [{
             "key": "wizard_download_dir",
             "desc": "Download directory",
-            "defaultValue": "/volume1/downloads/amIncoming",
+            "defaultValue": "/volume1/downloads/amule/Incoming",
             "validator": {
                 "allowBlank": false,
                 "regex": {
@@ -26,7 +26,7 @@
         "subitems": [{
             "key": "wizard_incomplete_dir",
             "desc": "Incomplete directory",
-			"defaultValue": "/volume1/downloads/amTemp",
+			"defaultValue": "/volume1/downloads/amule/Temp",
             "validator": {
                 "allowBlank": false,
                 "regex": {
@@ -73,14 +73,14 @@
     "step_title": "Basic configuration",
     "items": [{
         "type": "password",
-        "desc": "Web interface password. Defaults to admin (Port: 4721)",
+        "desc": "Web interface password. Defaults to admin (Port: 4711)",
         "subitems": [{
             "key": "wizard_webpassword",
             "desc": "Password"
         }]
     }, {
         "type": "password",
-        "desc": "External Connection password. Defaults to admin (Port: 4722)",
+        "desc": "External Connection password. Defaults to admin (Port: 4712)",
         "subitems": [{
             "key": "wizard_ecpassword",
             "desc": "EC Password",
