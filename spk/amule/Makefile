@@ -38,6 +38,7 @@ amule_extra_install:
 #    wget -nv -P synoTMP/ http://www.emule-mods.it/download/server.met 2>/dev/null;if [ $? -eq 0 -a -f synoTMP/server.met.1 ]; then rm synoTMP/server.met;mv synoTMP/server.met.1 synoTMP/server.met;echo Updated;else echo Dowloaded;fi
 	install -m 755 -d $(STAGING_DIR)/var
 	install -m 644 src/server.met $(STAGING_DIR)/var/server.met
+	install -m 644 src/ipfilter.zip $(STAGING_DIR)/var/ipfilter.zip
 	install -m 755 -d $(STAGING_DIR)/app
 	install -m 644 src/app/config $(STAGING_DIR)/app/config
 	install -m 755 -d $(STAGING_DIR)/app/images

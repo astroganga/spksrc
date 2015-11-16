@@ -6,8 +6,10 @@
 }, {
     "step_title": "Basic configuration",
     "items": [{
+        "desc": "This is a test description"
+    }, {
         "type": "textfield",
-        "desc": "Download directory",
+        "desc": "Directory to store downloaded files",
         "subitems": [{
             "key": "wizard_download_dir",
             "desc": "Download directory",
@@ -15,8 +17,8 @@
             "validator": {
                 "allowBlank": false,
                 "regex": {
-                    "expr": "/^\\\/volume[0-9]+\\\/.+/",
-                    "errorText": "Path should begin with /volume?/ with ? the number of the volume and should have at least one subdir"
+                    "expr": "/^\\\/volume[0-9]+\\\/.+\\\/.+/",
+                    "errorText": "Path should begin with /volume?/ with ? the number of the volume and should have at least two subdir"
                 }
             }
         }]
@@ -83,7 +85,28 @@
         "desc": "External Connection password. Defaults to admin (Port: 4712)",
         "subitems": [{
             "key": "wizard_ecpassword",
-            "desc": "EC Password",
+            "desc": "EC Password"
         }]
+    }]
+}, {
+    "step_title": "Advanced configuration",
+    "items": [{
+        "type": "singleselect",
+        "desc": "Do you want restore configuration backup files of previous installation (if present)?",
+        "subitems": [{
+            "key": "wizard_restore_config_yes",
+            "desc": "Full restore (Wizard settings will be ignored)",
+            "defaultValue": false
+        }, {
+            "key": "wizard_restore_config_credits",
+            "desc": "Partial restore (Only credits will be restored)",
+            "defaultValue": false
+        }, {
+            "key": "wizard_restore_config_no",
+            "desc": "No restore",
+            "defaultValue": true
+        }]
+    }, {
+        "desc": "Warning: This step will be executed only if backup files will be found"
     }]
 }]
