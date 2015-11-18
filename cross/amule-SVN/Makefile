@@ -3,13 +3,10 @@ PKG_VERS = 2.4.0
 PKG_EXT = tar.gz
 PKG_DIR = $(PKG_NAME)-$(PKG_VERS)
 PKG_DOWNLOAD_METHOD = svn
-#PKG_SVN_REV = 10847
-#PKG_SVN_REV = 10855
-#PKG_SVN_REV = 10859
-#PKG_SVN_REV = 10860
-PKG_SVN_REV = 10868
+#PKG_SVN_REV = 10874
+PKG_SVN_REV= HEAD
 PKG_DIST_NAME = trunk
-PKG_DIST_SITE = http://amule.googlecode.com/svn
+PKG_DIST_SITE = https://github.com/amule-project/amule
 PKG_DIST_FILE = $(PKG_NAME)-r$(PKG_SVN_REV).$(PKG_EXT)
 PKG_DIR = $(PKG_NAME)-r*
 
