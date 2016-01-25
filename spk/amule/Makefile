@@ -39,6 +39,8 @@ amule_extra_install:
 	install -m 755 -d $(STAGING_DIR)/var
 	install -m 644 src/server.met $(STAGING_DIR)/var/server.met
 	install -m 644 src/ipfilter.zip $(STAGING_DIR)/var/ipfilter.zip
+	install -m 744 src/speedtest_mod.py $(STAGING_DIR)/var/speedtest_mod.py
+	install -m 744 src/doneDL.sh $(STAGING_DIR)/var/doneDL.sh
 	install -m 755 -d $(STAGING_DIR)/app
 	install -m 644 src/app/config $(STAGING_DIR)/app/config
 	install -m 755 -d $(STAGING_DIR)/app/images

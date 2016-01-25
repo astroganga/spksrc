@@ -229,7 +229,7 @@ postinst_configure_amule_conf()
     change_config_param_value IncomingDir "${wizard_download_dir}" eMule >> ${INSTALL_LOG}
     change_config_param_value TempDir "${wizard_incomplete_dir}" eMule >> ${INSTALL_LOG}
     #------------- Recommended Settings ------------------
-    change_config_param_value MaxUpload 50 eMule >> ${INSTALL_LOG}
+    change_config_param_value MaxUpload ${upspeed} eMule >> ${INSTALL_LOG}
     change_config_param_value SlotAllocation 5 eMule >> ${INSTALL_LOG}
     change_config_param_value MaxSourcesPerFile 450 eMule >> ${INSTALL_LOG}
     change_config_param_value MaxConnections 350 eMule >> ${INSTALL_LOG}
@@ -243,6 +243,7 @@ postinst_configure_amule_conf()
     change_config_param_value ShareHiddenFiles 1 eMule >> ${INSTALL_LOG}
     change_config_param_value SmartIdState 1 eMule >> ${INSTALL_LOG}
     change_config_param_value UseSrcSeeds 1 ExternalConnect >> ${INSTALL_LOG}
+    change_config_param_value CoreCommand "${INSTALL_DIR}/var/doneDL.sh \"%NAME\" \"%FILE\" %HASH %SIZE \"%DLACTIVETIME\"" UserEvents\\/DownloadCompleted >> ${INSTALL_LOG}
 }
 
 postinst ()
@@ -282,6 +283,12 @@ postinst ()
         fi
 
         if [ "${wizard_restore_config_yes}" == "false" ]; then
+            python ${INSTALL_DIR}/var/speedtest_mod.py --cspath ${INSTALL_DIR}/var/ > ${INSTALL_DIR}/var/speedtest_mod.log
+            if [ $? == 0 ]; then
+                upspeed=$(cat ${INSTALL_DIR}/var/calculatedUploadSpeed.out)
+            else
+                upspeed=50
+            fi
             postinst_configure_amule_conf
         fi
 
