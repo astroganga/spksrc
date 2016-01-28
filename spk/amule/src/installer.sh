@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Package
-PACKAGE="amule"
+PACKAGE="${SYNOPKG_PKGNAME}"
 DNAME="aMule Daemon"
 
 # Others
@@ -44,12 +44,12 @@ preinst ()
             exit 1
         fi
 
-		VOLUME=`echo ${wizard_download_dir} | cut -d"/" -f2`
-		VOLUME_TMP=`echo ${wizard_incomplete_dir} | cut -d"/" -f2`
-		if [  "${VOLUME}" != "${VOLUME_TMP}" ]; then
-    		echo "${ERROR_MSG2}"
-			exit 1
-		fi
+        VOLUME=`echo ${wizard_download_dir} | cut -d"/" -f2`
+        VOLUME_TMP=`echo ${wizard_incomplete_dir} | cut -d"/" -f2`
+        if [  "${VOLUME}" != "${VOLUME_TMP}" ]; then
+            echo "${ERROR_MSG2}"
+            exit 1
+        fi
 		
         SHARE=`echo ${wizard_download_dir} | cut -d"/" -f3`
         SHARE_TMP=`echo ${wizard_incomplete_dir} | cut -d"/" -f3`

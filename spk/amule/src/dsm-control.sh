@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Package
-PACKAGE="amule"
+PACKAGE="${SYNOPKG_PKGNAME}"
 DNAME="aMule Daemon"
 
 # Others

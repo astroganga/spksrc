@@ -1,112 +1,112 @@
 [{
-    "step_title": "Installation Note",
+    "step_title": "Nota di Installazione",
     "items": [{
-        "desc": "You are about to install aMule Daemon Stable Version 2.3.1 for Synology NAS. Press Next to begin."
+        "desc": "Stai per installare aMule Daemon versione stabile 2.3.1 per Synology NAS. Premi Avanti per iniziare."
     }]
 }, {
-    "step_title": "Basic configuration",
+    "step_title": "Configurazione Base",
     "items": [{
-        "desc": "Choose values of the installation parameters"
+        "desc": "Scegliere il valore dei parametri di installazione"
     }, {
         "type": "textfield",
-        "desc": "Directory to store downloaded files",
+        "desc": "Directory in cui memorizzare i file scaricati",
         "subitems": [{
             "key": "wizard_download_dir",
-            "desc": "Download directory",
+            "desc": "Directory di download",
             "defaultValue": "/volume1/downloads/amule/Incoming",
             "validator": {
                 "allowBlank": false,
                 "regex": {
                     "expr": "/^\\\/volume[0-9]+\\\/.+\\\/.+/",
-                    "errorText": "Path should begin with /volume?/ with ? the number of the volume and should have at least two subdir"
+                    "errorText": "Il path deve iniziare con /volume?/ dove ? è il numero del volume e deve avere almeno due sottodirectory"
                 }
             }
         }]
     }, {
         "type": "textfield",
-        "desc": "Directory to keep Temp files in until download is complete",
+        "desc": "Directory temporanea in cui memorizzare i file non ancora completati",
         "subitems": [{
             "key": "wizard_incomplete_dir",
-            "desc": "Incomplete directory",
-			"defaultValue": "/volume1/downloads/amule/Temp",
+            "desc": "Directory temporanea",
+            "defaultValue": "/volume1/downloads/amule/Temp",
             "validator": {
                 "allowBlank": false,
                 "regex": {
                     "expr": "/^\\\/volume[0-9]+\\\/.+\\\/.+/",
-                    "errorText": "Path should begin with /volume?/ with ? the number of the volume and should have at least one subdir"
+                    "errorText": "Il path deve iniziare con /volume?/ dove ? è il numero del volume e deve avere almeno due sottodirectory"
                 }
             }
         }]
     }]
 }, {
-    "step_title": "Basic configuration",
+    "step_title": "Configurazione Base",
     "items": [{
         "type": "textfield",
-        "desc": "Standard TCP Port",
+        "desc": "Porta TCP Standard",
         "subitems": [{
             "key": "wizard_tcpport",
-            "desc": "TCP Port",
+            "desc": "Porta TCP",
 			"defaultValue": "34662",
             "validator": {
                 "allowBlank": false,
                 "regex": {
                     "expr": "/^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[2-9]\\d{3}|1[1-9]\\d{2}|10[3-9]\\d|102[4-9])$/",
-                    "errorText": "Port should be between 1024 and 65535"
+                    "errorText": "La porta deve essere compresta tra 1024 e 65535"
                 }
-            }			
+            }
         }]
     }, {
         "type": "textfield",
-        "desc": "Extended UDP Port (Kad/Global Search)",
+        "desc": "Porta UDP Estesa (Kad/Ricerca globale)",
         "subitems": [{
             "key": "wizard_udpport",
-            "desc": "UDP Port",
-            "defaultValue": "34672",
+            "desc": "Porta UDP",
+			"defaultValue": "34672",
             "validator": {
                 "allowBlank": false,
                 "regex": {
                     "expr": "/^(6553[0-5]|655[0-2]\\d|65[0-4]\\d\\d|6[0-4]\\d{3}|[1-5]\\d{4}|[2-9]\\d{3}|1[1-9]\\d{2}|10[3-9]\\d|102[4-9])$/",
-                    "errorText": "Port should be between 1024 and 65535"
+                    "errorText": "La porta deve essere compresta tra 1024 e 65535"
                 }
-            }			
+            }
         }]
     }]
 }, {
-    "step_title": "Basic configuration",
+    "step_title": "Configurazione Base",
     "items": [{
         "type": "password",
-        "desc": "Web interface password. Defaults to admin (Port: 4711)",
+        "desc": "Password per l'interfaccia Web. Il valore di default è admin (Porta: 4711)",
         "subitems": [{
             "key": "wizard_webpassword",
             "desc": "Password"
         }]
     }, {
         "type": "password",
-        "desc": "External Connection password. Defaults to admin (Port: 4712)",
+        "desc": "Password per le connessioni Esterne, come ad esempio aMuleGUI. Il valore di default è admin (Porta: 4712)",
         "subitems": [{
             "key": "wizard_ecpassword",
             "desc": "EC Password"
         }]
     }]
 }, {
-    "step_title": "Advanced configuration",
+    "step_title": "Configurazione Avanzata",
     "items": [{
         "type": "singleselect",
-        "desc": "Do you want restore configuration backup files of previous installation (if present)?",
+        "desc": "Vuoi ripristinare la configurazione conservata nella precedente installazione (se presente)?",
         "subitems": [{
             "key": "wizard_restore_config_yes",
-            "desc": "Full restore (Wizard settings will be ignored)",
+            "desc": "Ripristino totale (Le impostazioni scelte verranno ignorate)",
             "defaultValue": false
         }, {
             "key": "wizard_restore_config_credits",
-            "desc": "Partial restore (Only credits will be restored)",
+            "desc": "Ripristino parziale (Saranno ripristinati solo i crediti)",
             "defaultValue": false
         }, {
             "key": "wizard_restore_config_no",
-            "desc": "No restore",
+            "desc": "Nessun ripristino",
             "defaultValue": true
         }]
     }, {
-        "desc": "Warning: This step will be executed only if backup files will be found"
+        "desc": "Attenzione: Questo passo sarà eseguito solo se viene trovato il backup di una precedente configurazione"
     }]
 }]
